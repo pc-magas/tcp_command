@@ -1,17 +1,20 @@
-#include"Network.h"
+#include"network.h"
 
 #include <sys/socket.h>
 #include <arpa/inet.h>
-#include<iostream>
+#include <unistd.h>
 
-Exception::getMessage(){
+#include<iostream>
+#include<cstdlib>
+
+std::string Exception::getMessage(){
     return this->message;
 }
 
 TCPServer::TCPServer(int port,std::string address)
 :port(port){
  
-    if ((this->sockfd = socket(PF_INET, SOCK_STREAM, IPPROTO_TCP)) < 0) {
+    if ((this->servSock = socket(PF_INET, SOCK_STREAM, IPPROTO_TCP)) < 0) {
         throw NetworkException("SOCKET Error: could not create basic socket");
     }
 
@@ -22,7 +25,7 @@ TCPServer::TCPServer(int port,std::string address)
     ServAddr.sin_port = htons(port);
 
     
-    if (bind(this->servSock, (struct sockaddr *) &ServAddr, sizeof(ServAddr)) < 0) {
+    if (bind(this->servSock, (struct sockaddr *) &this->ServAddr, sizeof(this->ServAddr)) < 0) {
         throw NetworkException("SOCKET Error: Failed to bind a socket");
     }
 
@@ -43,7 +46,7 @@ void TCPServer::listen(){
        }
 
        send(clntSock, "12345\n", 6, 0));
-       
+
        std::cout << "Handling client %s\n" << inet_ntoa(ClntAddr.sin_addr) << std::endl;
        close(clntSock);
     }
