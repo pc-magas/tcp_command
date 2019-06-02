@@ -5,7 +5,7 @@
 #include <unistd.h>
 
 #include<iostream>
-#include<cstdlib>
+#include<cstring>
 
 std::string Exception::getMessage(){
     return this->message;
@@ -18,10 +18,10 @@ TCPServer::TCPServer(int port,std::string address)
         throw new NetworkException("SOCKET Error: could not create basic socket");
     }
 
-    memset(&this->ServAddr,0,sizeof(this->ServAddr))
+    memset(&this->ServAddr,0,sizeof(this->ServAddr));
 
     ServAddr.sin_family = AF_INET;
-    ServAddr.sin_addr.s_addr = inet_addr(address);
+    ServAddr.sin_addr.s_addr = inet_addr(address.c_str());
     ServAddr.sin_port = htons(port);
 
     
@@ -29,7 +29,7 @@ TCPServer::TCPServer(int port,std::string address)
         throw new NetworkException("SOCKET Error: Failed to bind a socket");
     }
 
-    if (listen(this->servSock, MAXPENDING) < 0) {
+    if (::listen(this->servSock, MAXPENDING) < 0) {
         throw new NetworkException("SOCKET Error: Failed to Listen");
     }
 }
@@ -37,7 +37,7 @@ TCPServer::TCPServer(int port,std::string address)
 void TCPServer::listen(){
 
     struct sockaddr_in ClntAddr;     /* Client address */
-    int clntLen=sizeof(ClntAddr);
+    socklen_t clntLen= (socklen_t)sizeof(ClntAddr);
     int clntSock;                    /* Socket descriptor for client */
     //@todo Dummy Logic Depedency Inject Socket Handler
     for (;;) {
@@ -45,7 +45,7 @@ void TCPServer::listen(){
            std::cout<<"Failed to fetch"<<std::endl;
        }
 
-       send(clntSock, "12345\n", 6, 0));
+       send(clntSock, "12345\n", 6, 0);
 
        std::cout << "Handling client %s\n" << inet_ntoa(ClntAddr.sin_addr) << std::endl;
        close(clntSock);
