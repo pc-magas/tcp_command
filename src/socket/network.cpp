@@ -15,10 +15,10 @@ TCPServer::TCPServer(int port,std::string address)
 :port(port){
  
     if ((this->servSock = socket(PF_INET, SOCK_STREAM, IPPROTO_TCP)) < 0) {
-        throw NetworkException("SOCKET Error: could not create basic socket");
+        throw new NetworkException("SOCKET Error: could not create basic socket");
     }
 
-    memset(&this->ServAddr,0,size_of(this->ServAddr))
+    memset(&this->ServAddr,0,sizeof(this->ServAddr))
 
     ServAddr.sin_family = AF_INET;
     ServAddr.sin_addr.s_addr = inet_addr(address);
@@ -26,11 +26,11 @@ TCPServer::TCPServer(int port,std::string address)
 
     
     if (bind(this->servSock, (struct sockaddr *) &this->ServAddr, sizeof(this->ServAddr)) < 0) {
-        throw NetworkException("SOCKET Error: Failed to bind a socket");
+        throw new NetworkException("SOCKET Error: Failed to bind a socket");
     }
 
     if (listen(this->servSock, MAXPENDING) < 0) {
-        throw NetworkException("SOCKET Error: Failed to Listen")
+        throw new NetworkException("SOCKET Error: Failed to Listen");
     }
 }
 

@@ -5,7 +5,7 @@
 #include <arpa/inet.h>
 
 //Dummy Value to be changed
-#define MAXPENDING = 5;
+#define MAXPENDING 5
 
 class Exception {
     public:
@@ -15,11 +15,7 @@ class Exception {
     std::string message;
 };
 
-class NetworkException:public Exception {
-    public:
-    NetworkException(){};
-    ~NetworkException(){};
-};
+class NetworkException:public Exception {};
 
 class TCPServer{
     public:
