@@ -1,9 +1,12 @@
-#ifndef HTTP_SOCKET
-#define HTTP_SOCKET
+#ifndef HTTP_NETWORK
+#define HTTP_NETWORK
 
 #include<string>
 #include <sys/socket.h>
 #include <arpa/inet.h>
+
+//Dummy Value to be changed
+#define MAXPENDING = 5;
 
 class Exception{
     public:
@@ -20,17 +23,10 @@ class TCPServer{
     TCPServer(unsinged int port,std::string address);
     ~TCPServer(unsinged int port);
     void listen();
-    void close();
     private:
     int port;
     //Socket file Descriptor
-    int sockfd;
+    int servSock;
     struct sockaddr_in ServAddr;
 }
-
-class　HTTP_REQUEST{
-    public:
-
-}
-
 #endif

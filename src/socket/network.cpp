@@ -2,6 +2,7 @@
 
 #include <sys/socket.h>
 #include <arpa/inet.h>
+#include<iostream>
 
 Exception::getMessage(){
     return this->message;
@@ -21,11 +22,33 @@ TCPServer::TCPServer(int port,std::string address)
     ServAddr.sin_port = htons(port);
 
     
-    if (bind(servSock, (struct sockaddr *) &ServAddr, sizeof(ServAddr)) < 0) {
+    if (bind(this->servSock, (struct sockaddr *) &ServAddr, sizeof(ServAddr)) < 0) {
         throw NetworkException("SOCKET Error: Failed to bind a socket");
     }
 
-    if (listen(servSock, MAXPENDING) < 0) {
+    if (listen(this->servSock, MAXPENDING) < 0) {
         throw NetworkException("SOCKET Error: Failed to Listen")
     }
+}
+
+void TCPServer::listen(){
+
+    struct sockaddr_in ClntAddr;     /* Client address */
+    int clntLen=sizeof(ClntAddr);
+    int clntSock;                    /* Socket descriptor for client */
+    //@todo Dummy Logic Depedency Inject Socket Handler
+    for (;;) {
+       if ((clntSock = accept(servSock, (struct sockaddr *) &ClntAddr, &clntLen)) < 0) {
+           std::cout<<"Failed to fetch"<<std::endl;
+       }
+
+       send(clntSock, "12345\n", 6, 0));
+       
+       std::cout << "Handling client %s\n" << inet_ntoa(ClntAddr.sin_addr) << std::endl;
+       close(clntSock);
+    }
+}
+
+TCPServer::~TCPServer(){
+ close(this->servSock);
 }
