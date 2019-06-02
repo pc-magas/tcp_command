@@ -15,7 +15,10 @@ class Exception {
     std::string message;
 };
 
-class NetworkException:public Exception {};
+class NetworkException:public Exception {
+    public:
+    NetworkException(std::string message) : Exception(message) {}
+};
 
 class TCPServer{
     public:

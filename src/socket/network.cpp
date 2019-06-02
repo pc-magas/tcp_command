@@ -6,6 +6,8 @@
 
 #include<iostream>
 #include<cstring>
+#include<string>
+
 
 std::string Exception::getMessage(){
     return this->message;
@@ -15,7 +17,7 @@ TCPServer::TCPServer(int port,std::string address)
 :port(port){
  
     if ((this->servSock = socket(PF_INET, SOCK_STREAM, IPPROTO_TCP)) < 0) {
-        throw new NetworkException("SOCKET Error: could not create basic socket");
+        throw NetworkException(std::string("SOCKET Error: could not create basic socket"));
     }
 
     memset(&this->ServAddr,0,sizeof(this->ServAddr));
@@ -26,11 +28,11 @@ TCPServer::TCPServer(int port,std::string address)
 
     
     if (bind(this->servSock, (struct sockaddr *) &this->ServAddr, sizeof(this->ServAddr)) < 0) {
-        throw new NetworkException("SOCKET Error: Failed to bind a socket");
+        throw NetworkException(std::string("SOCKET Error: Failed to bind a socket"));
     }
 
     if (::listen(this->servSock, MAXPENDING) < 0) {
-        throw new NetworkException("SOCKET Error: Failed to Listen");
+        throw NetworkException(std::string("SOCKET Error: Failed to Listen"));
     }
 }
 
@@ -47,7 +49,7 @@ void TCPServer::listen(){
 
        send(clntSock, "12345\n", 6, 0);
 
-       std::cout << "Handling client %s\n" << inet_ntoa(ClntAddr.sin_addr) << std::endl;
+       std::cout << "Handling client: " << inet_ntoa(ClntAddr.sin_addr) << std::endl;
        close(clntSock);
     }
 }
