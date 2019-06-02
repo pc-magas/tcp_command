@@ -31,4 +31,11 @@ class TCPServer{
     int servSock;
     struct sockaddr_in ServAddr;
 };
+
+//A generic way to handle Network Connections
+class ConnectionHandler{
+    public:
+    ConnectionHandler()
+    virtual void handle(int socketid);
+}
 #endif
