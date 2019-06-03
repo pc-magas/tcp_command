@@ -33,12 +33,12 @@ void SimpleCommandHandler::handle(int socketid){
 }
 
 void CommandParser::addData(int socketid, const char* data, int length){
-    this->commandBuff.append(data,length);
+    this->commandBuff[socketid].append(data,length);
 }
 
 std::string CommandParser::getCommand(int socketid){
-    std::size_t pos=this->commandBuff.find('\n');;
-    std::string fetchedCommand=this->commandBuff.substr(0,pos);
-    this->commandBuff=this->commandBuff.substr(pos);
+    std::size_t pos=this->commandBuff[socketid].find('\n');
+    std::string fetchedCommand=this->commandBuff[socketid].substr(0,pos);
+    this->commandBuff[socketid]=this->commandBuff[socketid].substr(pos);
     return fetchedCommand;
 }
