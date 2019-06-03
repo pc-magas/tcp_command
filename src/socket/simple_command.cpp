@@ -22,9 +22,11 @@ void SimpleCommandHandler::handle(int socketid){
     std::string command = this->readLine(socketid);
 
     if(command.compare('exit')){
-        this->sendResult(socketid,"Thank You Very Much\n");
-        close(socketid);
+        this->sendResult(socketid,"Thank You Very Much\nExiting\n");
+        return 0;
     } else {
         this->sendResult(socketid,"Wrong Command\n");
     }
+
+    return 1;
 }

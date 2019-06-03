@@ -6,17 +6,17 @@
 
 class CommandParser{
     private:
-        std::string commandBuff;
+        std::string commandBuff="";
     public:
-        std::string getCommand()
-        std::string addData()
+        std::string getCommand();
+        std::string addData(const char*, int length);
 }
 
 class SimpleCommandHandler:public ConnectionHandler{
     public:
     SimpleCommandHandler(int readBufferSize, CommandParser commandParser):buffLen(readBufferSize),parser(commandParser){};
     ~SimpleCommandHandler(){};
-    void handle(int socketid);
+    int handle(int socketid);
 
     private:
     std::string readLine(int socketid);

@@ -35,7 +35,10 @@ class TCPServer{
 //A generic way to handle Network Connections
 class ConnectionHandler{
     public:
-    ConnectionHandler()
-    virtual void handle(int socketid);
+    ConnectionHandler();
+    /**
+    * @return 0 Close Connection 1 do not close
+    */
+    virtual int handle(int socketid);
 }
 #endif
