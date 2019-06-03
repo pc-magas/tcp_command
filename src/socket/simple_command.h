@@ -8,8 +8,8 @@ class CommandParser{
     private:
         std::string commandBuff="";
     public:
-        std::string getCommand();
-        std::string addData(const char*, int length);
+        std::string getCommand(int socketid);
+        void addData(int socketid,const char* data, int length);
 }
 
 class SimpleCommandHandler:public ConnectionHandler{

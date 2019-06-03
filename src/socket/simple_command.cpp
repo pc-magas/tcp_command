@@ -6,16 +6,17 @@ std::string SimpleCommandHandler::readLine(int socketid){
     char buffer[this->bufflen] 
 
     memset(&buffer,'\0',this->bufflen*sizeof(char));
-    while ((recvSize = recv(socketid, buffer, this->bufflen, 0)) > 0) {
-        this->parser->addData(buffer);
-        memset(&buffer,'\0',this->bufflen*sizeof(char)); //Reset Data in order to avoid Garbage
+    //reCeive a Byte less in order each received data to be a string (Initialized as an empty String with \0 encding char)
+    while ((recvSize = recv(socketid, buffer, this->bufflen-1, 0)) > 0) {
+        this->parser->addData(buffer,strlen(buffer));
+        memset(buffer,'\0',this->bufflen*sizeof(char)); //Reset Data in order to avoid Garbage
 	}
 
     return this->parser->getCommand();
 }
 
 void SimpleCommandHandler::sendResult(int socketid, std::string result){
-    send(clntSock,result::c_str(), result.length() + 1, 0);
+    send(clntSock,result.c_str(), result.length() + 1, 0);
 }
 
 void SimpleCommandHandler::handle(int socketid){
@@ -29,4 +30,15 @@ void SimpleCommandHandler::handle(int socketid){
     }
 
     return 1;
+}
+
+void CommandParser::addData(int socketid, const char* data, int length){
+    this->commandBuff.append(data,length);
+}
+
+std::string CommandParser::getCommand(int socketid){
+    std::size_t pos=this->commandBuff.find('\n');;
+    std::string fetchedCommand=this->commandBuff.substr(0,pos);
+    this->commandBuff=this->commandBuff.substr(pos);
+    return fetchedCommand;
 }
