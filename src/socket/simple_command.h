@@ -4,9 +4,17 @@
 #include"network.h"
 #include<string>
 
+class CommandParser{
+    private:
+        std::string commandBuff;
+    public:
+        std::string getCommand()
+        std::string addData()
+}
+
 class SimpleCommandHandler:public ConnectionHandler{
     public:
-    SimpleCommandHandler(int readBufferSize):buffLen(readBufferSize){};
+    SimpleCommandHandler(int readBufferSize, CommandParser commandParser):buffLen(readBufferSize),parser(commandParser){};
     ~SimpleCommandHandler(){};
     void handle(int socketid);
 
@@ -14,6 +22,6 @@ class SimpleCommandHandler:public ConnectionHandler{
     std::string readLine(int socketid);
     void sendResult(int socketid, std::string result);
     const int buffLen;
+    const CommandParser parser;
 }
-
 #endif
