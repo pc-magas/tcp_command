@@ -2,6 +2,7 @@
 #define NETWORK_TELNET
 
 #include"network.h"
+#include"../tools/command_parser.h"
 #include<string>
 
 class SimpleCommandHandler:public ConnectionHandler{
