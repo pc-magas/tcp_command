@@ -1,15 +1,15 @@
-#include "telnet.h"
+#include "simple_command.h"
 #include<string>
 
 std::string SimpleCommandHandler::readLine(int socketid){
     int recvSize=0;
-    char buffer[this->bufflen] 
+    char buffer[this->buffLen];
 
-    memset(&buffer,'\0',this->bufflen*sizeof(char));
+    memset(&buffer,'\0',this->buffLen*sizeof(char));
     //reCeive a Byte less in order each received data to be a string (Initialized as an empty String with \0 encding char)
-    while ((recvSize = recv(socketid, buffer, this->bufflen-1, 0)) > 0) {
-        this->parser->addData(buffer,strlen(buffer));
-        memset(buffer,'\0',this->bufflen*sizeof(char)); //Reset Data in order to avoid Garbage
+    while ((recvSize = recv(socketid, buffer, this->buffLen-1, 0)) > 0) {
+        this->parser->addData(socketid,(cost char*) buffer,strlen(buffer));
+        memset(buffer,'\0',this->buffLen*sizeof(char)); //Reset Data in order to avoid Garbage
 	}
 
     return this->parser->getCommand();

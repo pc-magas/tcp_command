@@ -11,7 +11,7 @@ class CommandParser{
     public:
         std::string getCommand(int socketid);
         void addData(int socketid, const char* data, int length);
-}
+};
 
 class SimpleCommandHandler:public ConnectionHandler{
     public:
@@ -24,5 +24,5 @@ class SimpleCommandHandler:public ConnectionHandler{
     void sendResult(int socketid, std::string result);
     const int buffLen;
     const CommandParser* parser;
-}
+};
 #endif

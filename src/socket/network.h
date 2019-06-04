@@ -1,7 +1,7 @@
 #ifndef HTTP_NETWORK
 #define HTTP_NETWORK
 
-#include<string>
+#include <string>
 #include <arpa/inet.h>
 
 //Dummy Value to be changed
@@ -40,5 +40,5 @@ class ConnectionHandler{
     * @return 0 Close Connection 1 do not close
     */
     virtual int handle(int socketid);
-}
+};
 #endif
