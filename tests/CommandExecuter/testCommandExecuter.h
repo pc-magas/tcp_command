@@ -12,8 +12,8 @@ class TestCommandExecuter: public CxxTest::TestSuite{
             int length=5;
             
             p.addData(5,data,length);
-            std::string command=p.getCommand();
-            
+            std::string command=p.getCommand(5);
+            TS_ASSERT_EQUALS(command,"");
         }
 
-}
+};

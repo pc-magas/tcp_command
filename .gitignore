@@ -1,2 +1,4 @@
 a.out
 .vscode
+tests/**/runner.cpp
+tests/**/*.h.gch
