@@ -23,6 +23,6 @@ class SimpleCommandHandler:public ConnectionHandler{
     std::string readLine(int socketid);
     void sendResult(int socketid, std::string result);
     const int buffLen;
-    const CommandParser* parser;
+    CommandParser* parser;
 };
 #endif
