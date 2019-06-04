@@ -20,7 +20,7 @@ void SimpleCommandHandler::sendResult(int socketid, std::string result){
     send(socketid, result.c_str(), result.length() + 1, 0);
 }
 
-void SimpleCommandHandler::handle(int socketid){
+int SimpleCommandHandler::handle(int socketid){
     std::string command = this->readLine(socketid);
 
     if(command.compare("exit") == 0){
