@@ -15,7 +15,7 @@ class CommandParser{
 
 class SimpleCommandHandler:public ConnectionHandler{
     public:
-    SimpleCommandHandler(int readBufferSize, CommandParser commandParser):buffLen(readBufferSize),parser(commandParser){};
+    SimpleCommandHandler(int readBufferSize, CommandParser* commandParser):buffLen(readBufferSize),parser(commandParser){};
     ~SimpleCommandHandler(){};
     int handle(int socketid);
 
@@ -23,6 +23,6 @@ class SimpleCommandHandler:public ConnectionHandler{
     std::string readLine(int socketid);
     void sendResult(int socketid, std::string result);
     const int buffLen;
-    const CommandParser parser;
+    const CommandParser* parser;
 }
 #endif
