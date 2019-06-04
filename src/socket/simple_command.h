@@ -2,16 +2,7 @@
 #define NETWORK_TELNET
 
 #include"network.h"
-#include<map>
 #include<string>
-
-class CommandParser{
-    private:
-        std::map<int,std::string> commandBuff;
-    public:
-        std::string getCommand(int socketid);
-        void addData(int socketid, const char* data, int length);
-};
 
 class SimpleCommandHandler:public ConnectionHandler{
     public:

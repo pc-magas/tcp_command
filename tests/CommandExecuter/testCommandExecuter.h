@@ -1,7 +1,7 @@
 #include <cxxtest/TestSuite.h>
 #include<string>
 
-#include "../../src/socket/simple_command.h"
+#include "../../src/tools/command_parser.h"
 
 class TestCommandExecuter: public CxxTest::TestSuite{
 
