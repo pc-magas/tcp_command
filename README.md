@@ -1,3 +1,3 @@
-#Simplistic Webserver
+#Simplistic Command Server
 
-A simple webserver that serves the contents of a specified folder.
+A simple TCP Server that is able to execute pseudo-commands.
