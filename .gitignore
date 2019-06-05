@@ -3,4 +3,5 @@ a.out
 tests/**/runner.cpp
 tests/**/*.h.gch
 **/*.o
-build/tests/*
+build/**/*
+!build/**/.gitkeep
