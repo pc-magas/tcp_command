@@ -1,4 +1,4 @@
-GDB=gdb
+GDB=gdb -enable-pretty-printing
 DEBUG ?= 1
 ifeq ($(DEBUG), 1)
     CCFLAGS =-DDEBUG
@@ -17,7 +17,7 @@ TESTS_SRC_PATH="./tests"
 SRC_PATH=""
 
 # NORMAL TARGETS
-
+# To Be filled
 
 # RUN TESTS
 
