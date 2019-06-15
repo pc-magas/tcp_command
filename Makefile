@@ -21,6 +21,9 @@ SRC_PATH=""
 build_commandParser: ./src/tools/command_parser.cpp ./src/tools/command_parser.h
 	${CPP} -Wall -g -c ./src/tools/command_parser.cpp -o ${BUILD_PATH}/command_parser.o
 
+build_network: ./src/socket/network.cpp ./src/socket/network.h
+	${CPP} -Wall -g -c ./src/socket/network.cpp -o ${BUILD_PATH}/network.o
+
 
 # RUN TESTS
 

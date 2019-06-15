@@ -20,20 +20,8 @@ class NetworkException:public Exception {
     NetworkException(std::string message) : Exception(message) {}
 };
 
-class TCPServer{
-    public:
-    TCPServer(int port,std::string address);
-    ~TCPServer();
-    void listen();
-    private:
-    int port;
-    //Socket file Descriptor
-    int servSock;
-    struct sockaddr_in ServAddr;
-};
-
 //A generic way to handle Network Connections
-class ConnectionHandler{
+class ConnectionHandler {
     public:
     ConnectionHandler();
     /**
@@ -41,4 +29,19 @@ class ConnectionHandler{
     */
     virtual int handle(int socketid);
 };
+
+class TCPServer {
+    public:
+        TCPServer(int port,std::string address, ConnectionHandler *c);
+        ~TCPServer();
+        void listen();
+    private:
+        int port;
+        //Socket file Descriptor
+        int servSock;
+        struct sockaddr_in ServAddr;
+        ConnectionHandler *c = NULL;
+};
+
+
 #endif

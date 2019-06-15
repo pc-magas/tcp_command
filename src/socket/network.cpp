@@ -13,7 +13,7 @@ std::string Exception::getMessage(){
     return this->message;
 }
 
-TCPServer::TCPServer(int port,std::string address)
+TCPServer::TCPServer(int port,std::string address, ConnectionHandler *c)
 :port(port){
  
     if ((this->servSock = socket(PF_INET, SOCK_STREAM, IPPROTO_TCP)) < 0) {
@@ -34,6 +34,12 @@ TCPServer::TCPServer(int port,std::string address)
     if (::listen(this->servSock, MAXPENDING) < 0) {
         throw NetworkException(std::string("SOCKET Error: Failed to Listen"));
     }
+
+    if(c==NULL){
+       throw Exception("You should provice a connection Handler"); 
+    }
+
+    this->c=c;
 }
 
 void TCPServer::listen(){
