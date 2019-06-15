@@ -24,6 +24,11 @@ build_commandParser: ./src/tools/command_parser.cpp ./src/tools/command_parser.h
 build_network: ./src/socket/network.cpp ./src/socket/network.h
 	${CPP} -Wall -g -c ./src/socket/network.cpp -o ${BUILD_PATH}/network.o
 
+build_simpleCommand: ./src/socket/simple_command.cpp ./src/socket/simple_command.h
+	${CPP} -Wall -g -c ./src/socket/simple_command.cpp -o ${BUILD_PATH}/simple_command.o
+
+build: build_simpleCommand build_commandParser build_network ./src/main.cpp
+	${CPP} -Wall -o ${BUILD_PATH}/server ${BUILD_PATH}/command_parser.o ${BUILD_PATH}/network.o ${BUILD_PATH}/simple_command.o ./src/main.cpp
 
 # RUN TESTS
 

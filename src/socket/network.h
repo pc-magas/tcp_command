@@ -23,16 +23,15 @@ class NetworkException:public Exception {
 //A generic way to handle Network Connections
 class ConnectionHandler {
     public:
-    ConnectionHandler();
     /**
     * @return 0 Close Connection 1 do not close
     */
-    virtual int handle(int socketid);
+    virtual int handle(int socketid) = 0;
 };
 
 class TCPServer {
     public:
-        TCPServer(int port,std::string address, ConnectionHandler *c);
+        TCPServer(int port, std::string address, ConnectionHandler *c);
         ~TCPServer();
         void listen();
     private:
