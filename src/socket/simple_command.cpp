@@ -1,6 +1,7 @@
 #include "simple_command.h"
 #include<string>
 #include<cstring>
+#include<iostream>
 
 std::string SimpleCommandHandler::readLine(int socketid){
     int recvSize=0;
@@ -22,7 +23,7 @@ void SimpleCommandHandler::sendResult(int socketid, std::string result){
 
 int SimpleCommandHandler::handle(int socketid){
     std::string command = this->readLine(socketid);
-
+    std::cout << "Command Sent: " << command << std::endl;
     if(command.compare("exit") == 0){
         this->sendResult(socketid,"Thank You Very Much\nExiting\n");
         return 0;

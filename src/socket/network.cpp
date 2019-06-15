@@ -7,7 +7,7 @@
 #include<iostream>
 #include<cstring>
 #include<string>
-
+#include <thread>
 
 std::string Exception::getMessage(){
     return this->message;
@@ -53,9 +53,9 @@ void TCPServer::listen(){
            std::cout<<"Failed to fetch"<<std::endl;
        }
 
-       send(clntSock, "12345\n", 6, 0);
-
        std::cout << "Handling client: " << inet_ntoa(ClntAddr.sin_addr) << std::endl;
+       send(clntSock, "WELCOME\n", 6, 0);
+       this->c->handle(clntSock);
        close(clntSock);
     }
 }
