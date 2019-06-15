@@ -7,7 +7,7 @@
 
 class SimpleCommandHandler:public ConnectionHandler{
     public:
-    SimpleCommandHandler(int readBufferSize, CommandParser* commandParser):buffLen(readBufferSize),parser(commandParser){};
+    SimpleCommandHandler(int readBufferSize, CommandParser *commandParser):buffLen(readBufferSize),parser(commandParser){};
     ~SimpleCommandHandler(){};
     int handle(int socketid);
 
