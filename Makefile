@@ -1,4 +1,4 @@
-GDB=gdb -enable-pretty-printing
+GDB=gdb
 DEBUG ?= 1
 ifeq ($(DEBUG), 1)
     CCFLAGS =-DDEBUG
@@ -10,7 +10,7 @@ endif
 
 CPP=g++ ${CCFLAGS}
 TESTGEN=cxxtestgen
-CFLAGS_DBG="-enable-pretty-printing"
+CFLAGS_DBG=""
 TEST_BUILD_PATH="./build/tests"
 BUILD_PATH="./build"
 TESTS_SRC_PATH="./tests"
@@ -30,3 +30,5 @@ test_command_parser_build: test_command_parser_gen
 test_command_parser_run: test_command_parser_build
 	${RUNPATH} ./build/tests/commandParser
 
+clean:
+	find ./build ! -name '.gitkeep' -type f -exec rm -f {} + && find ./tests ! -name *.h -type f -exec rm -f {} +
