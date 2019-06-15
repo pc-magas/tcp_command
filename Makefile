@@ -5,7 +5,7 @@ ifeq ($(DEBUG), 1)
 	RUNPATH =${GDB}
 else
     CCFLAGS=-DNDEBUG
-	RUNPATH=""
+	RUNPATH="/bin/sh -c"
 endif
 
 CPP=g++ ${CCFLAGS}
@@ -28,7 +28,8 @@ test_command_parser_build: test_command_parser_gen
 	${CPP} -o ${TEST_BUILD_PATH}/commandParser ${TESTS_SRC_PATH}/CommandParser/runner.cpp ./src/tools/command_parser.cpp
 
 test_command_parser_run: test_command_parser_build
-	${RUNPATH} ./build/tests/commandParser
+	# ${RUNPATH} ./build/tests/commandParser
+	./build/tests/commandParser
 
 clean:
 	find ./build ! -name '.gitkeep' -type f -exec rm -f {} + && find ./tests ! -name *.h -type f -exec rm -f {} +
