@@ -42,15 +42,17 @@ void TCPServer::listen(){
     int clntSock;                    /* Socket descriptor for client */
 
     for (;;) {
+    
        if ((clntSock = accept(servSock, (struct sockaddr *) &ClntAddr, &clntLen)) < 0) {
            std::cout<<"Failed to fetch"<<std::endl;
+           continue;
        }
 
        std::cout << "Handling client: " << inet_ntoa(ClntAddr.sin_addr) << std::endl;
        send(clntSock, "WELCOME", 6, 0);
 
        std::thread handleConnectionThread(callHandler, this->c, clntSock);
-    //    this->c->handle(clntSock);
+       handleConnectionThread.detach();
        close(clntSock);
     }
 }
