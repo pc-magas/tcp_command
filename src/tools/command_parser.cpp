@@ -18,7 +18,7 @@ std::string CommandParser::getCommand(int socketid){
         std::cout << "Fetched Command: " << fetchedCommand << std::endl;
         std::cout << "BUFFER BEFORE: " << this->commandBuff[socketid] << std::endl; 
     #endif
-    
+
     this->commandBuff[socketid] = this->commandBuff[socketid].substr(pos+1);
 
     #ifdef DEBUG
