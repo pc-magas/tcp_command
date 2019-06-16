@@ -39,4 +39,19 @@ class TestCommandParser: public CxxTest::TestSuite{
             TS_ASSERT_EQUALS(command,"exit");
         }
 
+        void testgetCommandMultipleEndLine(){
+            CommandParser p;
+            const char data[10] ={'e','x','i','t','\n','e','x','i','t','\n'};
+            int length=10;
+            
+            p.addData(5,data,length);
+            std::string command=p.getCommand(5);
+            TS_ASSERT_EQUALS(command,"exit");
+            
+            command=p.getCommand(5);
+            TS_ASSERT_EQUALS(command,"exit");
+
+            command=p.getCommand(5);
+            TS_ASSERT_EQUALS(command,"");
+        }
 };
