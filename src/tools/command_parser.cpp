@@ -14,10 +14,16 @@ std::string CommandParser::getCommand(int socketid){
     }
 
     std::string fetchedCommand = this->commandBuff[socketid].substr(0,pos);
-    // std::cout << "Fetched Command: " << fetchedCommand << std::endl;
-    // std::cout << "BUFFER BEFORE: " << this->commandBuff[socketid] << std::endl; 
+    #ifdef DEBUG
+        std::cout << "Fetched Command: " << fetchedCommand << std::endl;
+        std::cout << "BUFFER BEFORE: " << this->commandBuff[socketid] << std::endl; 
+    #endif
+    
     this->commandBuff[socketid] = this->commandBuff[socketid].substr(pos+1);
-    // std::cout << "BUFFER After: " << this->commandBuff[socketid] << std::endl;
+
+    #ifdef DEBUG
+        std::cout << "BUFFER After: " << this->commandBuff[socketid] << std::endl;
+    #endif
 
     return fetchedCommand;
 }
