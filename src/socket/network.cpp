@@ -45,9 +45,9 @@ TCPServer::TCPServer(int port,std::string address, ConnectionHandler *c)
 void TCPServer::listen(){
 
     struct sockaddr_in ClntAddr;     /* Client address */
-    socklen_t clntLen= (socklen_t)sizeof(ClntAddr);
+    socklen_t clntLen = (socklen_t)sizeof(ClntAddr);
     int clntSock;                    /* Socket descriptor for client */
-    //@todo Dummy Logic Depedency Inject Socket Handler
+
     for (;;) {
        if ((clntSock = accept(servSock, (struct sockaddr *) &ClntAddr, &clntLen)) < 0) {
            std::cout<<"Failed to fetch"<<std::endl;
