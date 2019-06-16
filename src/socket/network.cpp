@@ -4,17 +4,16 @@
 #include <arpa/inet.h>
 #include <unistd.h>
 
-#include<iostream>
-#include<cstring>
-#include<string>
+#include <iostream>
+#include <cstring>
+#include <string>
 #include <thread>
 
 std::string Exception::getMessage(){
     return this->message;
 }
 
-TCPServer::TCPServer(int port,std::string address, ConnectionHandler *c)
-:port(port){
+TCPServer::TCPServer(int port,std::string address, std::shared_ptr<ConnectionHandler> c):port(port),c(c){
  
     if ((this->servSock = socket(PF_INET, SOCK_STREAM, IPPROTO_TCP)) < 0) {
         throw NetworkException(std::string("SOCKET Error: could not create basic socket"));
@@ -34,12 +33,6 @@ TCPServer::TCPServer(int port,std::string address, ConnectionHandler *c)
     if (::listen(this->servSock, MAXPENDING) < 0) {
         throw NetworkException(std::string("SOCKET Error: Failed to Listen"));
     }
-
-    if(c==NULL){
-       throw Exception("You should provice a connection Handler"); 
-    }
-
-    this->c=c;
 }
 
 void TCPServer::listen(){
@@ -54,8 +47,10 @@ void TCPServer::listen(){
        }
 
        std::cout << "Handling client: " << inet_ntoa(ClntAddr.sin_addr) << std::endl;
-       send(clntSock, "WELCOME\n", 6, 0);
-       this->c->handle(clntSock);
+       send(clntSock, "WELCOME", 6, 0);
+
+       std::thread handleConnectionThread(callHandler, this->c, clntSock);
+    //    this->c->handle(clntSock);
        close(clntSock);
     }
 }
@@ -63,3 +58,7 @@ void TCPServer::listen(){
 TCPServer::~TCPServer(){
  close(this->servSock);
 }
+
+int callHandler(std::shared_ptr<ConnectionHandler> c, int socketId){
+    return c->handle(socketId);
+}        

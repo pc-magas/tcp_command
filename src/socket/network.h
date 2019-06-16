@@ -1,6 +1,7 @@
 #ifndef HTTP_NETWORK
 #define HTTP_NETWORK
 
+#include <memory>
 #include <string>
 #include <arpa/inet.h>
 
@@ -29,9 +30,17 @@ class ConnectionHandler {
     virtual int handle(int socketid) = 0;
 };
 
+/**
+ * Because the only job s to call the handle method of ConnectionHandler,
+ * I assume there's no need for a class.
+ * 
+ * Is is used to call the handler in a std::thread.
+ */
+int callHandler(std::shared_ptr<ConnectionHandler> c, int sockerId);        
+
 class TCPServer {
     public:
-        TCPServer(int port, std::string address, ConnectionHandler *c);
+        TCPServer(int port, std::string address, std::shared_ptr<ConnectionHandler> c);
         ~TCPServer();
         void listen();
     private:
@@ -39,7 +48,7 @@ class TCPServer {
         //Socket file Descriptor
         int servSock;
         struct sockaddr_in ServAddr;
-        ConnectionHandler *c = NULL;
+        std::shared_ptr<ConnectionHandler> c;
 };
 
 

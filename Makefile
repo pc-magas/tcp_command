@@ -8,7 +8,7 @@ else
 	RUNPATH=/bin/sh -c
 endif
 
-CPP=g++ ${CCFLAGS}
+CPP=g++ ${CCFLAGS} -std=c++11
 TESTGEN=cxxtestgen
 CFLAGS_DBG=""
 TEST_BUILD_PATH="./build/tests"
@@ -28,9 +28,9 @@ build_simpleCommand: ./src/socket/simple_command.cpp ./src/socket/simple_command
 	${CPP} -Wall -g -c ./src/socket/simple_command.cpp -o ${BUILD_PATH}/simple_command.o
 
 build: build_simpleCommand build_commandParser build_network ./src/main.cpp
-	${CPP} -Wall -o ${BUILD_PATH}/server ${BUILD_PATH}/command_parser.o ${BUILD_PATH}/network.o ${BUILD_PATH}/simple_command.o ./src/main.cpp
+	${CPP} -pthread -Wall -o ${BUILD_PATH}/server ${BUILD_PATH}/command_parser.o ${BUILD_PATH}/network.o ${BUILD_PATH}/simple_command.o ./src/main.cpp
 
-run:
+run: build
 	${RUNPATH} ${BUILD_PATH}/server
 
 # RUN TESTS
