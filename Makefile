@@ -1,5 +1,5 @@
 GDB=gdb
-DEBUG ?= 1
+DEBUG ?= 0
 ifeq ($(DEBUG), 1)
     CCFLAGS =-DDEBUG
 	RUNPATH =${GDB}
