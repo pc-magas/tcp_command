@@ -49,7 +49,7 @@ void TCPServer::listen(){
        }
        std::cout << "Client Socket: " << clntSock << std::endl;
        std::cout << "Handling client: " << inet_ntoa(ClntAddr.sin_addr) << std::endl;
-       send(clntSock, "WELCOME", 6, 0);
+       send(clntSock, "WELCOME", 8, 0);
 
        std::thread handleConnectionThread(callHandler, this->c, clntSock);
        handleConnectionThread.detach();
