@@ -8,12 +8,16 @@ void CommandParser::addData(int socketid, const char* data, int length){
 
 std::string CommandParser::getCommand(int socketid){
     std::size_t pos = this->commandBuff[socketid].find('\n');
-    
+
     if (pos==std::string::npos){
         return "";
     }
 
     std::string fetchedCommand = this->commandBuff[socketid].substr(0,pos);
+    // std::cout << "Fetched Command: " << fetchedCommand << std::endl;
+    // std::cout << "BUFFER BEFORE: " << this->commandBuff[socketid] << std::endl; 
     this->commandBuff[socketid] = this->commandBuff[socketid].substr(pos+1);
+    // std::cout << "BUFFER After: " << this->commandBuff[socketid] << std::endl;
+
     return fetchedCommand;
 }

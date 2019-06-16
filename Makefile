@@ -5,7 +5,7 @@ ifeq ($(DEBUG), 1)
 	RUNPATH =${GDB}
 else
     CCFLAGS=-DNDEBUG
-	RUNPATH="/bin/sh -c"
+	RUNPATH=/bin/sh -c
 endif
 
 CPP=g++ ${CCFLAGS}
@@ -30,6 +30,9 @@ build_simpleCommand: ./src/socket/simple_command.cpp ./src/socket/simple_command
 build: build_simpleCommand build_commandParser build_network ./src/main.cpp
 	${CPP} -Wall -o ${BUILD_PATH}/server ${BUILD_PATH}/command_parser.o ${BUILD_PATH}/network.o ${BUILD_PATH}/simple_command.o ./src/main.cpp
 
+run:
+	${RUNPATH} ${BUILD_PATH}/server
+
 # RUN TESTS
 
 test_command_parser_gen:
@@ -39,8 +42,8 @@ test_command_parser_build: test_command_parser_gen build_commandParser
 	${CPP} -o ${TEST_BUILD_PATH}/commandParser ${TESTS_SRC_PATH}/CommandParser/runner.cpp ${BUILD_PATH}/command_parser.o
 
 test_command_parser_run: test_command_parser_build
-	# ${RUNPATH} ./build/tests/commandParser
-	./build/tests/commandParser
+	${RUNPATH} ./build/tests/commandParser
+	#./build/tests/commandParser
 
 clean:
 	find ./build ! -name '.gitkeep' -type f -exec rm -f {} + && find ./tests ! -name *.h -type f -exec rm -f {} +
