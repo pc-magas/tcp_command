@@ -31,6 +31,7 @@ std::string SimpleCommandHandler::readLine(int socketid){
 }
 
 void SimpleCommandHandler::sendResult(int socketid, std::string result){
+    std::cout << "Socket length data" << result.length() << std::endl;
     send(socketid, result.c_str(), result.length(), 0);
 }
 

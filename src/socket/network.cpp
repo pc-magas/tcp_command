@@ -2,6 +2,7 @@
 
 #include <sys/socket.h>
 #include <arpa/inet.h>
+#include <netinet/tcp.h>
 #include <unistd.h>
 
 #include <iostream>
@@ -15,7 +16,7 @@ std::string Exception::getMessage(){
 
 TCPServer::TCPServer(int port,std::string address, std::shared_ptr<ConnectionHandler> c):port(port),c(c){
  
-    if ((this->servSock = socket(PF_INET, SOCK_STREAM, IPPROTO_TCP)) < 0) {
+    if ((this->servSock = socket(PF_INET, SOCK_STREAM|SOCK_NONBLOCK, IPPROTO_TCP)) < 0) {
         throw NetworkException(std::string("SOCKET Error: could not create basic socket"));
     }
 
@@ -45,6 +46,7 @@ void TCPServer::listen(){
     
        if ((clntSock = accept(servSock, (struct sockaddr *) &ClntAddr, &clntLen)) < 0) {
            std::cout<<"Failed to fetch"<<std::endl;
+           std::this_thread::sleep_for(std::chrono::seconds(1));
            continue;
        }
        std::cout << "Client Socket: " << clntSock << std::endl;

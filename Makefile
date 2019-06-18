@@ -1,10 +1,16 @@
 GDB=gdb
 DEBUG ?= 0
+FORCE_SHELL ?= 0
+
 ifeq ($(DEBUG), 1)
     CCFLAGS =-DDEBUG
 	RUNPATH =${GDB}
 else
     CCFLAGS=-DNDEBUG
+	RUNPATH=/bin/sh -c
+endif
+
+ifeq (${FORCE_SHELL}, 1)
 	RUNPATH=/bin/sh -c
 endif
 
