@@ -59,7 +59,7 @@ void TCPServer::listen(){
 }
 
 TCPServer::~TCPServer(){
- close(this->servSock);
+ ::close(this->servSock);
 }
 
 int callHandler(std::shared_ptr<ConnectionHandler> c, int socketId){
