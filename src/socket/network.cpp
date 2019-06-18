@@ -14,13 +14,13 @@ std::string Exception::getMessage(){
     return this->message;
 }
 
-TCPServer::TCPServer(int port,std::string address, std::shared_ptr<ConnectionHandler> c):port(port),c(c){
+TCPServer::TCPServer(int port,std::string address, std::shared_ptr<ConnectionHandler> connection):port(port),servSock(::socket(PF_INET, SOCK_STREAM|SOCK_NONBLOCK, IPPROTO_TCP)),connection(connection){
  
-    if ((this->servSock = socket(PF_INET, SOCK_STREAM|SOCK_NONBLOCK, IPPROTO_TCP)) < 0) {
+    if (this->servSock < 0) {
         throw NetworkException(std::string("SOCKET Error: could not create basic socket"));
     }
 
-    memset(&this->ServAddr,0,sizeof(this->ServAddr));
+    std::memset(&this->ServAddr,0,sizeof(this->ServAddr));
 
     ServAddr.sin_family = AF_INET;
     ServAddr.sin_addr.s_addr = inet_addr(address.c_str());
@@ -53,7 +53,7 @@ void TCPServer::listen(){
        std::cout << "Handling client: " << inet_ntoa(ClntAddr.sin_addr) << std::endl;
        send(clntSock, "WELCOME", 8, 0);
 
-       std::thread handleConnectionThread(callHandler, this->c, clntSock);
+       std::thread handleConnectionThread(callHandler, this->connection, clntSock);
        handleConnectionThread.detach();
     }
 }

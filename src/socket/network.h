@@ -24,10 +24,11 @@ class NetworkException:public Exception {
 //A generic way to handle Network Connections
 class ConnectionHandler {
     public:
-    /**
-    * @return 0 Close Connection 1 do not close
-    */
-    virtual int handle(int socketid) = 0;
+        virtual ~ConnectionHandler() = default;
+        /**
+        * @return 0 Close Connection 1 do not close
+        */
+        virtual int handle(int socketid) = 0;
 };
 
 /**
@@ -40,7 +41,7 @@ int callHandler(std::shared_ptr<ConnectionHandler> c, int sockerId);
 
 class TCPServer {
     public:
-        TCPServer(int port, std::string address, std::shared_ptr<ConnectionHandler> c);
+        TCPServer(int port, std::string address, std::shared_ptr<ConnectionHandler> connection);
         ~TCPServer();
         void listen();
     private:
@@ -48,7 +49,7 @@ class TCPServer {
         //Socket file Descriptor
         int servSock;
         struct sockaddr_in ServAddr;
-        std::shared_ptr<ConnectionHandler> c;
+        std::shared_ptr<ConnectionHandler> connection;
 };
 
 
