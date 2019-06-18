@@ -5,3 +5,4 @@ tests/**/*.h.gch
 **/*.o
 build/*/*
 !build/*/.gitkeep
+stackexchange
