@@ -37,7 +37,7 @@ class ConnectionHandler {
  * 
  * Is is used to call the handler in a std::thread.
  */
-int callHandler(std::shared_ptr<ConnectionHandler> c, int sockerId);        
+void callHandler(std::shared_ptr<ConnectionHandler> c, int sockerId);        
 
 class TCPServer {
     public:

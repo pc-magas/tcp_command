@@ -14,7 +14,7 @@ std::string Exception::getMessage(){
     return this->message;
 }
 
-TCPServer::TCPServer(int port,std::string address, std::shared_ptr<ConnectionHandler> connection):servSock(::socket(PF_INET, SOCK_STREAM|SOCK_NONBLOCK, IPPROTO_TCP)),connection(connection){
+TCPServer::TCPServer(int port,std::string address, std::shared_ptr<ConnectionHandler> connection):servSock(::socket(PF_INET, SOCK_STREAM, IPPROTO_TCP)),connection(connection){
  
     if (this->servSock < 0) {
         throw NetworkException(std::string("SOCKET Error: could not create basic socket"));
@@ -45,12 +45,11 @@ void TCPServer::listen(){
     for (;;) {
     
        if ((clntSock = accept(servSock, (struct sockaddr *) &ClntAddr, &clntLen)) < 0) {
-           std::cerr<<"Failed to fetch"<<std::endl;
-           std::this_thread::sleep_for(std::chrono::seconds(1));
+           std::clog<<"Failed to fetch"<<std::endl;
            continue;
        }
-       std::cout << "Client Socket: " << clntSock << std::endl;
-       std::cout << "Handling client: " << inet_ntoa(ClntAddr.sin_addr) << std::endl;
+       std::clog << "Client Socket: " << clntSock << std::endl;
+       std::clog << "Handling client: " << inet_ntoa(ClntAddr.sin_addr) << std::endl;
        send(clntSock, "WELCOME", 8, 0);
 
        std::thread handleConnectionThread(callHandler, this->connection, clntSock);
@@ -62,6 +61,6 @@ TCPServer::~TCPServer(){
  ::close(this->servSock);
 }
 
-int callHandler(std::shared_ptr<ConnectionHandler> c, int socketId){
-    return c->handle(socketId);
+void callHandler(std::shared_ptr<ConnectionHandler> c, int socketId){
+    while(c->handle(socketId));
 }        
