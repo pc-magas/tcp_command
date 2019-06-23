@@ -27,11 +27,11 @@ bool SimpleCommandHandler::handle(int socketid){
             std::cout << "DEBUG BUFFER: " << buffer << "RECEIVED SIZE: " << recvSize << std::endl;
         #endif
         // memset(buffer,'\0',this->buffLen*sizeof(char)); //Reset Data in order to avoid Garbage
-        std::string command = "";
+        std::string command = EMPTY_COMMAND;
         do {
             command = parser->getCommand(socketid);
             if(!this->processCommand(command,socketid)) return false;
-        } while(command != "");
+        } while(command != EMPTY_COMMAND);
 	}
     
     return true;
@@ -49,7 +49,7 @@ bool SimpleCommandHandler::processCommand(std::string command, int socketid) {
     #ifdef DEBUG
         std::cout << "On socket: " << socketid << " is handled the following command: " << command << std::endl;
     #endif
-    if(command == ""){
+    if(command == EMPTY_COMMAND){
         return true; //Do not process empty commands
     } else if(command == "exit") {
         this->sendResult(socketid,"Thank You Very Much\nExiting\n");

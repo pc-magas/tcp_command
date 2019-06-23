@@ -1,6 +1,8 @@
 #ifndef NETWORK_TELNET
 #define NETWORK_TELNET
 
+#define EMPTY_COMMAND ""
+
 #include<string>
 #include<map>
 
