@@ -1,11 +1,10 @@
 #include "simple_command.h"
-#include<string>
-#include<cstring>
-#include <unistd.h>
+#include <string>
+#include <cstring>
+#include <iostream>
+#include <map>
 
-#include<iostream>
-// #include <thread>
-#include <chrono>
+#include <unistd.h>
 
 std::string SimpleCommandHandler::readLine(int socketid){
     int recvSize=0;
@@ -37,19 +36,40 @@ void SimpleCommandHandler::sendResult(int socketid, std::string result){
 bool SimpleCommandHandler::handle(int socketid){
     std::string command = this->readLine(socketid);
     std::clog << "Command Sent: " << command << std::endl;
+
+    //In order to ensure that all data have been sent we close the socket later
+    if(this->shouldSocketToBeClosed(socketid)){
+        this->disconnect(socketid);
+        return false;
+    }
     
-    bool ok=true;
+    this->toBeTerminated[socketid]=false;
 
     if(command.compare("exit") == 0){
         this->sendResult(socketid,"Thank You Very Much\nExiting\n");
         #ifdef DEBUG
           std::cout << "Command Exit" << std::endl;
         #endif
+        this->toBeTerminated[socketid]=true;
     } else {
         this->sendResult(socketid,"Wrong Command\n");
     }
 
-    // std::this_thread::sleep_for(std::chrono::seconds(1));
-    close(socketid);
-    return ok;
+    return true;
 }
+
+void SimpleCommandHandler::disconnect(int socketid){
+    this->parser->clearBuff(socketid);
+    close(socketid);
+    this->toBeTerminated.erase(socketid);
+}
+
+ bool SimpleCommandHandler::shouldSocketToBeClosed(int socketid){
+    auto socketExists = this->toBeTerminated.find(socketid);
+
+    if(socketExists!=this->toBeTerminated.end()){
+        return this->toBeTerminated[socketid];
+    }
+
+    return false;
+ }

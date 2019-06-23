@@ -14,12 +14,14 @@ class SimpleCommandHandler:public ConnectionHandler{
     SimpleCommandHandler(int readBufferSize, CommandParser *commandParser):buffLen(readBufferSize),parser(commandParser){};
     ~SimpleCommandHandler(){};
     bool handle(int socketid);
+    void disconnect(int socketid);
 
     private:
     std::string readLine(int socketid);
     void sendResult(int socketid, std::string result);
     const int buffLen;
     CommandParser* parser;
-    std::map<int,std::string> toBeTerminatedBuff;
+    std::map<int,bool> toBeTerminated;
+    bool shouldSocketToBeClosed(int socketid);
 };
 #endif
