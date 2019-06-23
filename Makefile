@@ -1,6 +1,8 @@
 GDB=gdb
 DEBUG ?= 0
 FORCE_SHELL ?= 1
+HOST ?= "127.0.0.1"
+PORT ?= 7070
 
 ifeq ($(DEBUG), 1)
     CCFLAGS =-DDEBUG
@@ -37,7 +39,7 @@ build: build_simpleCommand build_commandParser build_network ./src/main.cpp
 	${CPP} -pthread -Wall -o ${BUILD_PATH}/server ${BUILD_PATH}/command_parser.o ${BUILD_PATH}/network.o ${BUILD_PATH}/simple_command.o ./src/main.cpp
 
 run: build
-	${RUNPATH} ${BUILD_PATH}/server
+	${RUNPATH} ${BUILD_PATH}/server -h ${HOST} -p ${PORT}
 
 # RUN TESTS
 
@@ -48,7 +50,7 @@ test_command_parser_build: test_command_parser_gen build_commandParser
 	${CPP} -o ${TEST_BUILD_PATH}/commandParser ${TESTS_SRC_PATH}/CommandParser/runner.cpp ${BUILD_PATH}/command_parser.o
 
 test_command_parser_run: test_command_parser_build
-	${RUNPATH} ./build/tests/commandParser
+	${RUNPATH} ./build/tests/commandParser 
 	#./build/tests/commandParser
 
 clean:
