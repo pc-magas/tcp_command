@@ -17,11 +17,9 @@ class SimpleCommandHandler:public ConnectionHandler{
     void disconnect(int socketid);
 
     private:
-    std::string readLine(int socketid);
     void sendResult(int socketid, std::string result);
     const int buffLen;
     CommandParser* parser;
-    std::map<int,bool> toBeTerminated;
-    bool shouldSocketToBeClosed(int socketid);
+    bool processCommand(std::string command, int socketid);
 };
 #endif

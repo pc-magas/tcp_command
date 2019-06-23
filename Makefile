@@ -1,6 +1,6 @@
 GDB=gdb
 DEBUG ?= 0
-FORCE_SHELL ?= 0
+FORCE_SHELL ?= 1
 
 ifeq ($(DEBUG), 1)
     CCFLAGS =-DDEBUG

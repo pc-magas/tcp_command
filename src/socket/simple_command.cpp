@@ -1,32 +1,11 @@
 #include "simple_command.h"
 #include <string>
-#include <cstring>
+#include <vector>
 #include <iostream>
 #include <map>
 
 #include <unistd.h>
 
-std::string SimpleCommandHandler::readLine(int socketid){
-    int recvSize=0;
-    char buffer[this->buffLen];
-
-    memset(&buffer,'\0',this->buffLen*sizeof(char));
-    //reCeive a Byte less in order each received data to be a string (Initialized as an empty String with \0 encding char)
-    while ((recvSize = recv(socketid, buffer, this->buffLen-1, 0)) > 0) {
-        this->parser->addData(socketid,(const char*) buffer, recvSize);
-        #ifdef DEBUG
-            std::cout << "DEBUG BUFFER: " << buffer << "RECEIVED SIZE: " << recvSize << std::endl;
-        #endif
-
-        memset(buffer,'\0',this->buffLen*sizeof(char)); //Reset Data in order to avoid Garbage
-	}
-
-    #ifdef DEBUG
-        std::cout << "DEBUG Loop BROKEN" << std::endl;
-    #endif
-
-    return this->parser->getCommand(socketid);
-}
 
 void SimpleCommandHandler::sendResult(int socketid, std::string result){
     std::cout << "Socket length data" << result.length() << std::endl;
@@ -34,42 +13,52 @@ void SimpleCommandHandler::sendResult(int socketid, std::string result){
 }
 
 bool SimpleCommandHandler::handle(int socketid){
-    std::string command = this->readLine(socketid);
-    std::clog << "Command Sent: " << command << std::endl;
+    #ifdef DEBUG
+        std::cout << "Handling Socket: " << socketid << std::endl;
+    #endif
 
-    //In order to ensure that all data have been sent we close the socket later
-    if(this->shouldSocketToBeClosed(socketid)){
-        this->disconnect(socketid);
-        return false;
-    }
+    std::vector<char> storage(buffLen);
+    char *const buffer = storage.data();
+    int recvSize=0;
+
+    while ((recvSize = ::recv(socketid, buffer, this->buffLen-1, 0)) > 0) {
+        parser->addData(socketid,(const char*) buffer, recvSize);
+        #ifdef DEBUG
+            std::cout << "DEBUG BUFFER: " << buffer << "RECEIVED SIZE: " << recvSize << std::endl;
+        #endif
+        // memset(buffer,'\0',this->buffLen*sizeof(char)); //Reset Data in order to avoid Garbage
+        std::string command = parser->getCommand(socketid);
+        #ifdef DEBUG
+            std::cout << "DEBUG COMMAND: " << command << std::endl;
+        #endif
+        if(!this->processCommand(command,socketid)) return false;
+	}
     
-    this->toBeTerminated[socketid]=false;
+    return true;
+}
 
-    if(command.compare("exit") == 0){
+void SimpleCommandHandler::disconnect(int socketid){
+
+    #ifdef DEBUG
+        std::cout << "Closing socket: " << socketid << std::endl;
+    #endif
+    this->parser->clearBuff(socketid);
+    ::close(socketid);
+}
+
+bool SimpleCommandHandler::processCommand(std::string command, int socketid) {
+    if(command == "exit") {
         this->sendResult(socketid,"Thank You Very Much\nExiting\n");
         #ifdef DEBUG
           std::cout << "Command Exit" << std::endl;
         #endif
-        this->toBeTerminated[socketid]=true;
+        this->disconnect(socketid);
+        return false;
+    } else if (command == "hello") {
+        this->sendResult(socketid,"Hello\n");
     } else {
         this->sendResult(socketid,"Wrong Command\n");
     }
 
     return true;
 }
-
-void SimpleCommandHandler::disconnect(int socketid){
-    this->parser->clearBuff(socketid);
-    close(socketid);
-    this->toBeTerminated.erase(socketid);
-}
-
- bool SimpleCommandHandler::shouldSocketToBeClosed(int socketid){
-    auto socketExists = this->toBeTerminated.find(socketid);
-
-    if(socketExists!=this->toBeTerminated.end()){
-        return this->toBeTerminated[socketid];
-    }
-
-    return false;
- }

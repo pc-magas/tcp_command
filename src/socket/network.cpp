@@ -55,6 +55,7 @@ void TCPServer::listen(){
     //    std::thread handleConnectionThread(callHandler, this->connection, clntSock);
     //    handleConnectionThread.detach();
        while(this->connection->handle(clntSock));
+       close(clntSock);
     }
 }
 
