@@ -50,7 +50,7 @@ bool SimpleCommandHandler::processCommand(std::string command, int socketid) {
     if(command == "exit") {
         this->sendResult(socketid,"Thank You Very Much\nExiting\n");
         #ifdef DEBUG
-          std::cout << "Command Exit" << std::endl;
+          std::cout << "Command Exit: " << std::endl;
         #endif
         this->disconnect(socketid);
         return false;
