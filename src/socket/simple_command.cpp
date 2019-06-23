@@ -4,8 +4,7 @@
 #include <unistd.h>
 
 #include<iostream>
-
-#include <thread>
+// #include <thread>
 #include <chrono>
 
 std::string SimpleCommandHandler::readLine(int socketid){
@@ -35,10 +34,12 @@ void SimpleCommandHandler::sendResult(int socketid, std::string result){
     send(socketid, result.c_str(), result.length(), 0);
 }
 
-int SimpleCommandHandler::handle(int socketid){
+bool SimpleCommandHandler::handle(int socketid){
     std::string command = this->readLine(socketid);
-    std::cout << "Command Sent: " << command << std::endl;
-    int ok=0;
+    std::clog << "Command Sent: " << command << std::endl;
+    
+    bool ok=true;
+
     if(command.compare("exit") == 0){
         this->sendResult(socketid,"Thank You Very Much\nExiting\n");
         #ifdef DEBUG
@@ -46,10 +47,9 @@ int SimpleCommandHandler::handle(int socketid){
         #endif
     } else {
         this->sendResult(socketid,"Wrong Command\n");
-        ok=1;
     }
 
-    std::this_thread::sleep_for(std::chrono::seconds(1));
+    // std::this_thread::sleep_for(std::chrono::seconds(1));
     close(socketid);
     return ok;
 }

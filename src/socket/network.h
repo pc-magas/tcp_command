@@ -28,7 +28,7 @@ class ConnectionHandler {
         /**
         * @return 0 Close Connection 1 do not close
         */
-        virtual int handle(int socketid) = 0;
+        virtual bool handle(int socketid) = 0;
 };
 
 /**

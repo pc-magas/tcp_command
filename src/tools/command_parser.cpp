@@ -43,3 +43,7 @@ std::string CommandParser::getCommand(int socketid){
 
     return fetchedCommand;
 }
+
+void CommandParser::clearBuff(int socketId){
+    this->commandBuff.erase(socketId);
+}

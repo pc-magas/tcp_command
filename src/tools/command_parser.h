@@ -10,6 +10,7 @@ class CommandParser{
     public:
         std::string getCommand(int socketid);
         void addData(int socketid, const char* data, int length);
+        void clearBuff(int socketId);
 };
 
 #endif
