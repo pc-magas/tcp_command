@@ -49,8 +49,9 @@ bool SimpleCommandHandler::processCommand(std::string command, int socketid) {
     #ifdef DEBUG
         std::cout << "On socket: " << socketid << " is handled the following command: " << command << std::endl;
     #endif
-
-    if(command == "exit") {
+    if(command == ""){
+        return true; //Do not process empty commands
+    } else if(command == "exit") {
         this->sendResult(socketid,"Thank You Very Much\nExiting\n");
         #ifdef DEBUG
           std::cout << "Command Exit: " << std::endl;
