@@ -27,18 +27,17 @@ bool SimpleCommandHandler::handle(int socketid){
             std::cout << "DEBUG BUFFER: " << buffer << "RECEIVED SIZE: " << recvSize << std::endl;
         #endif
         // memset(buffer,'\0',this->buffLen*sizeof(char)); //Reset Data in order to avoid Garbage
-        std::string command = parser->getCommand(socketid);
-        #ifdef DEBUG
-            std::cout << "DEBUG COMMAND: " << command << std::endl;
-        #endif
-        if(!this->processCommand(command,socketid)) return false;
+        std::string command = "";
+        do {
+            command = parser->getCommand(socketid);
+            if(!this->processCommand(command,socketid)) return false;
+        } while(command != "");
 	}
     
     return true;
 }
 
 void SimpleCommandHandler::disconnect(int socketid){
-
     #ifdef DEBUG
         std::cout << "Closing socket: " << socketid << std::endl;
     #endif
@@ -47,6 +46,10 @@ void SimpleCommandHandler::disconnect(int socketid){
 }
 
 bool SimpleCommandHandler::processCommand(std::string command, int socketid) {
+    #ifdef DEBUG
+        std::cout << "On socket: " << socketid << " is handled the following command: " << command << std::endl;
+    #endif
+
     if(command == "exit") {
         this->sendResult(socketid,"Thank You Very Much\nExiting\n");
         #ifdef DEBUG
