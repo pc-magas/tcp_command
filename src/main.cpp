@@ -14,6 +14,7 @@ int main(int argc, char **argv){
     int argVal=0;
 
     while ((argVal = getopt (argc, argv, "h:p:")) != -1){
+        std::cout << optarg << std::endl;
         switch (argVal) {
         case 'h':
             address = optarg;
@@ -31,7 +32,7 @@ int main(int argc, char **argv){
     try {
         CommandParser p;
         std::shared_ptr<ConnectionHandler> connectionHandler (new SimpleCommandHandler(10,&p));
-        std::clog << "Trying to establish a server in " << address << ":"<<port<<std::endl;
+        std::clog << "Trying to establish a server in " << address << ":"<< port << std::endl;
         TCPServer server(std::atoi(port.c_str()), address, connectionHandler);
         server.listen();
     } catch(Exception e) {
