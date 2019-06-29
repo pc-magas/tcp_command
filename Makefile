@@ -1,20 +1,6 @@
 GDB=gdb
-DEBUG ?= 0
-FORCE_SHELL ?= 1
 HOST ?=127.0.0.1
 PORT ?=7070
-
-ifeq ($(DEBUG), 1)
-    CCFLAGS =-DDEBUG
-	RUNPATH =${GDB}
-else
-    CCFLAGS=-DNDEBUG
-	RUNPATH=/bin/sh -c
-endif
-
-ifeq (${FORCE_SHELL}, 1)
-	RUNPATH=/bin/sh -c
-endif
 
 CPP=g++ ${CCFLAGS} -std=c++11
 TESTGEN=cxxtestgen
@@ -22,6 +8,7 @@ CFLAGS_DBG=""
 TEST_BUILD_PATH="./build/tests"
 BUILD_PATH=./build/release
 TESTS_SRC_PATH="./tests"
+DEBUGER=gdb
 SRC_PATH=""
 
 # NORMAL TARGETS
@@ -37,8 +24,12 @@ build_simpleCommand: ./src/socket/simple_command.cpp ./src/socket/simple_command
 
 build: build_simpleCommand build_commandParser build_network ./src/main.cpp
 	${CPP} -pthread -Wall -o ${BUILD_PATH}/server ${BUILD_PATH}/command_parser.o ${BUILD_PATH}/network.o ${BUILD_PATH}/simple_command.o ./src/main.cpp
+
 run: build
-	${RUNPATH} ${BUILD_PATH}/server -h ${HOST} -p ${PORT}
+	${BUILD_PATH}/server -h ${HOST} -p ${PORT}
+
+debug: build
+	${DEBUGER} --args ${BUILD_PATH}/server -h ${HOST} -p ${PORT}
 
 # RUN TESTS
 
