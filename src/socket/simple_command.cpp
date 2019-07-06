@@ -11,31 +11,6 @@ void SimpleCommandHandler::sendResult(int socketid, std::string result){
     send(socketid, result.c_str(), result.length(), 0);
 }
 
-// bool SimpleCommandHandler::handle(int socketid){
-//     #ifdef DEBUG
-//         std::cout << "Handling Socket: " << socketid << std::endl;
-//     #endif
-
-//     std::vector<char> storage(this->buffLen);
-//     char *const buffer = storage.data();
-//     int recvSize=0;
-
-//     while ((recvSize = ::recv(socketid, buffer, this->buffLen-1, 0)) > 0) {
-//         parser->addData(socketid,(const char*) buffer, recvSize);
-//         #ifdef DEBUG
-//             std::cout << "DEBUG BUFFER: " << buffer << "RECEIVED SIZE: " << recvSize << std::endl;
-//         #endif
-//         // memset(buffer,'\0',this->buffLen*sizeof(char)); //Reset Data in order to avoid Garbage
-//         std::string command = EMPTY_COMMAND;
-//         do {
-//             command = parser->getCommand(socketid);
-//             if(!this->processCommand(command,socketid)) return false;
-//         } while(command != EMPTY_COMMAND);
-// 	}
-    
-//     return true;
-// }
-
 bool SimpleCommandHandler::handleReceivedData(int socketid, const char* receivedBuffer, int recvSize) {
 
         parser->addData(socketid,(const char*) receivedBuffer, recvSize);
