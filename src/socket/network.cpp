@@ -54,10 +54,9 @@ void TCPServer::listen(){
        std::clog << "Handling client: " << inet_ntoa(ClntAddr.sin_addr) << std::endl;
        send(clntSock, "WELCOME", 8, 0);
 
-    //    std::thread handleConnectionThread(callHandler, this->connection, clntSock);
-    //    handleConnectionThread.detach();
-       this->connection->handle(clntSock);
-       close(clntSock);
+       std::thread handleConnectionThread(callHandler, this->connection, clntSock);
+       handleConnectionThread.detach();
+    //    this->connection->handle(clntSock);
     }
 }
 
@@ -79,4 +78,5 @@ bool ConnectionHandler::handle(int socketid){
 
 void callHandler(std::shared_ptr<ConnectionHandler> handler, int socketId){
     handler->handle(socketId);
+    close(socketId);
 }        
