@@ -9,6 +9,8 @@
 #include <cstring>
 #include <string>
 #include <thread>
+#include <vector>
+
 
 std::string Exception::getMessage(){
     return this->message;
@@ -54,7 +56,7 @@ void TCPServer::listen(){
 
     //    std::thread handleConnectionThread(callHandler, this->connection, clntSock);
     //    handleConnectionThread.detach();
-       while(this->connection->handle(clntSock));
+       this->connection->handle(clntSock);
        close(clntSock);
     }
 }
@@ -63,6 +65,18 @@ TCPServer::~TCPServer(){
  ::close(this->servSock);
 }
 
+bool ConnectionHandler::handle(int socketid){
+    std::vector<char> storage(buffLen);
+    char *const buffer = storage.data();
+    int recvSize=0;    
+    
+    while ((recvSize = ::recv(socketid, buffer, this->buffLen-1, 0)) > 0) {
+        if(!this->handleReceivedData(socketid,buffer,recvSize)){ return false; }
+    }
+
+    return true;
+}
+
 void callHandler(std::shared_ptr<ConnectionHandler> handler, int socketId){
-    while(handler->handle(socketId));
+    handler->handle(socketId);
 }        

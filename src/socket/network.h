@@ -23,17 +23,21 @@ class NetworkException:public Exception {
 
 //A generic way to handle Network Connections
 class ConnectionHandler {
+    protected:
+        virtual bool handleReceivedData(int socketid, const char* receivedBuffer, int recvSize) = 0;
+    
     public:
-        virtual ~ConnectionHandler() = default;
-        /**
-        * @return 0 Close Connection 1 do not close
-        */
-        virtual bool handle(int socketid) = 0;
+        ConnectionHandler(int buffLen):buffLen(buffLen){};
+        ~ConnectionHandler(){};
+        bool handle(int socketid);
         virtual void disconnect(int socketid) = 0;
+    
+    private:
+        const int buffLen;
 };
 
 /**
- * Because the only job s to call the handle method of ConnectionHandler,
+ * Because the only job is to call the handle method of ConnectionHandler,
  * I assume there's no need for a class.
  * 
  * Is is used to call the handler in a std::thread.

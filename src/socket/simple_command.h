@@ -12,16 +12,17 @@
 
 
 class SimpleCommandHandler:public ConnectionHandler{
+    protected:
+        bool handleReceivedData(int socketid, const char* receivedBuffer, int recvSize);
+
     public:
-    SimpleCommandHandler(int readBufferSize, CommandParser *commandParser):buffLen(readBufferSize),parser(commandParser){};
-    ~SimpleCommandHandler(){};
-    bool handle(int socketid);
-    void disconnect(int socketid);
+        SimpleCommandHandler(int readBufferSize, CommandParser *commandParser):ConnectionHandler(readBufferSize),parser(commandParser){};
+        ~SimpleCommandHandler(){};
+        void disconnect(int socketid);
 
     private:
-    void sendResult(int socketid, std::string result);
-    const int buffLen;
-    CommandParser* parser;
-    bool processCommand(std::string command, int socketid);
+        void sendResult(int socketid, std::string result);
+        CommandParser* parser;
+        bool processCommand(std::string command, int socketid);
 };
 #endif
