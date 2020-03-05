@@ -1,6 +1,6 @@
 # Simplistic Command Server
 
-A simple TCP Server that is able to execute pseudo-commands. By default Listend into localhost and port 7070 (no terminal parameter are provided yet).
+A simple TCP Server that is able to execute pseudo-commands. By default Listens into localhost and port 7070 (no terminal parameter are provided yet).
 I made this kind of server in order to learn better C++.
 
 # Build, develop and run unit test
